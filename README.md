@@ -1,27 +1,36 @@
 # Requisitos: instalar nodejs y npm, comprobar que este instalado con:
+
+```sh
 node --version
 npm --version
+```
 
 # Clonar el repositorio e instalar las dependencias
+
+```sh
 git clone https://github.com/VexedElm035/tienda_keys.git 
 cd tienda_keys
 npm install
+```
 
+# Inicializar la app
+(opcional con parametros: -- --host 0.0.0.0 --port 5173)
 
-# Inicializar la app (opcional con parametros: -- --host 0.0.0.0 --port 5173)
+```sh
 npm run dev
+```
 
 # En diferente terminal ejecutar comando de npx tailwind
-``sh
+
+```sh
 npx @tailwindcss/cli -i ./src/index.css -o ./src/output.css --watch
-``
+```
 
 ### Compile and Minify for Production
 
 ```sh
 npm run build
 ```
-
 
 # Anotaciones de clase cff
 
