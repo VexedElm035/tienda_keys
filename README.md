@@ -1,33 +1,20 @@
-CORRER EN DOS TERMINALES:
-EN UNA TERMINAL:
-npm run dev -- --host 0.0.0.0 --port 5173
-EN OTRA TERMINAL:
-npx @tailwindcss/cli -i ./src/index.css -o ./src/output.css --watch
+# Requisitos: instalar nodejs y npm, comprobar que este instalado con:
+node --version
+npm --version
 
-
-# appvue
-
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+# Clonar el repositorio e instalar las dependencias
+git clone https://github.com/VexedElm035/tienda_keys.git 
+cd tienda_keys
 npm install
-```
 
-### Compile and Hot-Reload for Development
 
-```sh
+# Inicializar la app (opcional con parametros: -- --host 0.0.0.0 --port 5173)
 npm run dev
-```
+
+# En diferente terminal ejecutar comando de npx tailwind
+``sh
+npx @tailwindcss/cli -i ./src/index.css -o ./src/output.css --watch
+``
 
 ### Compile and Minify for Production
 
@@ -36,6 +23,7 @@ npm run build
 ```
 
 
+# Anotaciones de clase cff
 
 MENU:
 uso de ajax para qeu no vuelva a recargar todo cada http request
