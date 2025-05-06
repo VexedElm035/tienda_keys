@@ -13,7 +13,7 @@ const selectedAvatar = ref('')
 const error = ref('')
 const role = ref('false')
 
-const avatars = Array.from({ length: 10 }, (_, i) => `uploads/pf${i + 1}.jpeg`)
+const avatars = Array.from({ length: 10 }, (_, i) => `../img/pf${i + 1}.jpeg`)
 
 async function signupUser() {
   try {
@@ -74,7 +74,7 @@ async function signupUser() {
               @click="selectedAvatar = avatar"
             >
               <img
-                :src="`http://localhost:8080/api/${avatar}`"
+                :src="`${avatar}`"
                 alt="avatar"
                 class="w-full rounded"
               />

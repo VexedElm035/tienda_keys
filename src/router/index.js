@@ -20,6 +20,7 @@ import SellerView from '../views/SellerView.vue'
 import KeySellerView from '../views/KeySellerView.vue'
 
 import AdminView from '../views/admin/AdminView.vue'
+import AdminLogin from '../views/admin/LoginView.vue'
 import AdminGamesView from '../views/admin/GamesView.vue'
 import AdminGenresView from '../views/admin/GenresView.vue'
 import AdminUsersView from '../views/admin/UsersView.vue'
@@ -58,6 +59,8 @@ const routes = [
     component: UserLayout, 
     children: [
       { path: '', name: 'admin', component: AdminView },
+      { path: 'login', name: 'adminlogin', component: AdminLogin },
+      
       { path: 'games', name: 'admingames', component: AdminGamesView },
       { path: 'genres', name: 'admingenres', component: AdminGenresView },
       { path: 'users', name: 'adminusers', component: AdminUsersView },
@@ -72,7 +75,7 @@ const router = createRouter({
   routes,
 })
 
-const protectedRoutes = ['cart', 'admin', 'profile']
+const protectedRoutes = ['cart', 'admin', 'profile', 'purchase/:id']
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()

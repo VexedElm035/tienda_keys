@@ -4,7 +4,6 @@
 
 </script>
 
-
 <template>
     <div class="bg-gray-800 p-4 rounded-lg text-center">
         <img :src="`http://localhost:8080/api/${img}`"  alt="Juego" class="max-w-48 h-64 object-cover mx-auto mb-3 rounded-lg">
