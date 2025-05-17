@@ -21,18 +21,18 @@ async function loginUser() {
       password: password.value
     })
     auth.login(email.value, password.value)
-    // const response = await axios.post('/login', {
-    //   email: email.value,
-    //   password: password.value,
-    // })
+    const response = await axios.post('/login', {
+    email: email.value,
+    password: password.value,
+    })
 
-    // const token = response.data.token
-    // auth.token = token
-    //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    const token = response.data.token
+    auth.token = token
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-    // console.log("Login exitoso:", response.data)
+    console.log("Login exitoso:", response.data)
 
-    // auth.login(response.data.user.username, response.data.user.id) // si guardas el usuario en el store
+    auth.login(response.data.user.username, response.data.user.id) // si guardas el usuario en el store
     router.push('/')
   } catch (err) {
     error.value = 'Login inválido'
