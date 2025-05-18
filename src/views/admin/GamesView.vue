@@ -84,6 +84,12 @@ async function selectGame(id) {
     try {
         const response = await axios.get(`/games/${id}`);
         name.value = response.data.name;
+        description.value = response.data.description
+        launch_date.value = response.data.launch_date
+        publisher.value = response.data.publisher
+        available_platforms.value = response.data.available_platforms
+        genre_id.value = response.data.genre_id
+        filename.value = response.data.img
         id_game.value = id;
         action.value = 'edit';
     } catch {
@@ -93,8 +99,15 @@ async function selectGame(id) {
 
 async function editGame() {
     try {
+        filename.value = await upload();
         const response = await axios.put(`/games/${id_game.value}`, {
-            name: name.value
+            name: name.value,
+            description: description.value,
+            launch_date: launch_date.value,
+            publisher: publisher.value,
+            available_platforms: available_platforms.value,
+            genre_id: genre_id.value,
+            img: filename.value
         });
         games.value = games.value.map(game => game.id === id_game.value ? response.data : game);
         name.value = '';
@@ -142,6 +155,7 @@ async function editGame() {
             
             <label for="img">Imagen</label>
             <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @select="onFileSelect" />
+            
        
             <label for="description">Descripcion:</label>
             <textarea v-model="description" id="description" type="fieldset" class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG"></textarea>
