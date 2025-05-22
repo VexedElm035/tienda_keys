@@ -168,7 +168,7 @@ async function addKey() {
               class="flex items-center gap-2 px-2 py-1 hover:bg-gray-600 cursor-pointer"
             >
               <img 
-                :src="`'http://apie7.selh12.xyz/api/'${game.img}`" 
+                :src="`${$img_url}${game.img}`" 
                 alt="game" 
                 class="w-8 h-8 rounded object-cover"
                 loading="lazy"
@@ -187,7 +187,7 @@ async function addKey() {
           <button @click="selectedGame=null" class=''>Seleccionar otro juego</button>
           <div class="flex items-center gap-2 my-2">
           <img 
-            :src="`http://localhost:8080/api/${selectedGame.img}`" 
+            :src="`${$img_url}${selectedGame.img}`" 
             alt="selected" 
             class="w-10 h-10 object-cover rounded"
             loading="lazy"

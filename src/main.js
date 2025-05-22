@@ -11,10 +11,10 @@ import router from './router'
 import './output.css'
 
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = 'http://localhost:8080/api';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
-axios.defaults.withXSgitRFToken = true;
+axios.defaults.withXSRFToken = true;
 
 
 const app = createApp(App)
