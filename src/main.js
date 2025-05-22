@@ -16,14 +16,14 @@ axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSgitRFToken = true;
 
-app.config.globalProperties.$img_url = import.meta.env.VITE_API_URL;
 
 const app = createApp(App)
+
+app.config.globalProperties.$img_url = import.meta.env.VITE_API_URL;
 
 const pinia = createPinia()
 pinia.use(piniaPersist)
 app.use(PrimeVue)
-app.use(imgurl)
 app.use(pinia)
 app.use(router)
 app.use(axios)
