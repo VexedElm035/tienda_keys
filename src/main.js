@@ -14,9 +14,8 @@ import './output.css'
 axios.defaults.baseURL = 'http://apie7.selh12.xyz/api';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
+axios.defaults.withXSgitRFToken = true;
 
-const imgurl = 'http://apie7.selh12.xyz/api/';
 const app = createApp(App)
 
 const pinia = createPinia()

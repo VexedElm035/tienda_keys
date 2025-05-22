@@ -52,7 +52,7 @@ onMounted(async () => {
         <div class="md:w-1/2 flex justify-center">
           <img
             v-if="game?.img"
-            :src="`http://localhost:8080/api/${game.img}`"
+            :src="`'http://apie7.selh12.xyz/api/'${game.img}`"
             class="max-w-md h-96 object-cover rounded-lg"
           />
         </div>
