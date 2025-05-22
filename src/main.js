@@ -11,10 +11,12 @@ import router from './router'
 import './output.css'
 
 
-axios.defaults.baseURL = 'http://apie7.selh12.xyz/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSgitRFToken = true;
+
+app.config.globalProperties.$img_url = import.meta.env.VITE_API_URL;
 
 const app = createApp(App)
 
@@ -25,5 +27,7 @@ app.use(imgurl)
 app.use(pinia)
 app.use(router)
 app.use(axios)
+
+
 
 app.mount('#app')

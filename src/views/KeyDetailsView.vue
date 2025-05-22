@@ -52,7 +52,7 @@ onMounted(async () => {
         <div class="md:w-1/2 flex justify-center">
           <img
             v-if="game?.img"
-            :src="`'http://apie7.selh12.xyz/api/'${game.img}`"
+            :src="`${$img_url}/${game.img}`"
             class="max-w-md h-96 object-cover rounded-lg"
           />
         </div>
@@ -70,7 +70,7 @@ onMounted(async () => {
           <div v-if="mainKey?.seller" class="flex items-center mb-4">
             <img
               v-if="mainKey?.seller?.img"
-              :src="`http://localhost:8080/api/${mainKey.seller.img}`"
+              :src="`${$img_url}/${mainKey.seller.img}`"
               alt="avatar"
               class="w-10 h-10 rounded-full mr-2"
             />
