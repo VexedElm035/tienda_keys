@@ -11,7 +11,7 @@ defineProps(['id', 'price', 'seller', 'seller_img', 'rate', 'deliverytime']);
             
             <div class="bg-gray-800 p-4 rounded-lg flex flex-row flex-wrap justify-between">
                 <div>
-                    <img :src="seller_img ? `http://localhost:8080/api/${seller_img}` : '../img/def.jpg'"  alt="Foto de perfil" class="w-12 h-12 rounded-full object-cover">
+                    <img :src="seller_img ? `${seller_img}` : '../img/def.jpg'"  alt="Foto de perfil" class="w-12 h-12 rounded-full object-cover">
                     {{seller}}
                 </div>
                 <div class="flex items-center gap-2">

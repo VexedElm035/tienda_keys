@@ -16,7 +16,7 @@ let platform = ref('');
 let gameKey = ref('');
 let expirationDate = ref('');
 let price = ref('');
-let tax = computed(() => (price.value * 0.15).toFixed(2));
+let tax = computed(() => (price.value * 0.08).toFixed(2));
 let deliveryTime = ref('');
 let region = ref('');
 let state = ref('disponible');
@@ -106,6 +106,10 @@ function chooseGame(game) {
   selectedGame.value = game;
 }
 
+async function status_window(){
+
+}
+
 async function addKey() {  
   try {
     const response = await axios.post('/gamekeys', {
@@ -120,7 +124,8 @@ async function addKey() {
       seller_id: sellerId.value,
       state: state.value
     });
-    
+
+    //await status_window()
     // Reset form after successful submission
     selectedGame.value = null;
     gameKey.value = '';
@@ -136,9 +141,12 @@ async function addKey() {
 
 <template>
   <section class="bg-gray-900 text-white min-h-screen flex flex-col">
-    <section class="bg-gray-800 p-6 rounded-lg mb-6 w-full max-w-2xl mx-auto">
+    <section class="mx-auto mt-6">
       <h3 class="text-xl font-semibold mb-4">Vender una Key</h3>
       <form @submit.prevent="addKey()">
+
+        <div v-if="!selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl">
+      
         <label class="block mb-2">Juego</label>
         <div class="relative mb-2">
           <input
@@ -172,8 +180,12 @@ async function addKey() {
             <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
           </div>
         </div>
-    
-        <div v-if="selectedGame" class="flex items-center gap-2 my-2">
+        </div>
+
+
+        <div v-if="selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl mx-auto">
+          <button @click="selectedGame=null" class=''>Seleccionar otro juego</button>
+          <div class="flex items-center gap-2 my-2">
           <img 
             :src="`http://localhost:8080/api/${selectedGame.img}`" 
             alt="selected" 
@@ -181,8 +193,9 @@ async function addKey() {
             loading="lazy"
           />
           <span>{{ selectedGame.name }}</span>
+          </div>
         </div>
-    
+        <div v-if="selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl">
         <label class="block mb-2">Plataforma</label>
         <select 
           v-model="platform" 
@@ -202,6 +215,7 @@ async function addKey() {
           placeholder="XXXXX-YYYYY-ZZZZZ"
           class="w-full p-2 rounded text-gray-100 mb-2"
           :disabled="!selectedGame"
+          maxlength="17"
         />
     
         <label class="block mb-2">Fecha de caducidad</label>
@@ -222,7 +236,7 @@ async function addKey() {
           min="0"
           step="0.01"
         />
-        <div class="text-gray-400 text-sm mb-4">Tarifa (15%): ${{ tax }}</div>
+        <div class="text-red-400 text-sm mb-4">Tarifa (8%): ${{ tax }}</div>
     
         <label class="block mb-2">Tipo de entrega</label>
         <select 
@@ -253,6 +267,8 @@ async function addKey() {
         >
           Publicar Key
         </button>
+        </div>
+      
       </form>
     </section>
   </section>

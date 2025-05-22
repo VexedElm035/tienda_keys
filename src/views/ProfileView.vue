@@ -41,7 +41,7 @@
         <section class="bg-gray-800 p-6 rounded-lg mb-6">
             <h3 class="text-xl font-semibold mb-4">Información de la cuenta</h3>
             <div class="flex items-center gap-6">
-                <img :src="user.avatar ? `http://localhost:8080/api/${user.avatar}` : '../img/def.jpg'" class="w-32 h-32 rounded-full object-cover" />
+                <img :src="user.avatar ? `${user.avatar}` : '../img/def.jpg'" class="w-32 h-32 rounded-full object-cover" />
 
                 <div class="flex-1">
                     <label class="block mb-2">Nombre de usuario</label>

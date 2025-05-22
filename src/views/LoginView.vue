@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import axios from 'axios'
+import { identity } from 'lodash'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -19,10 +20,10 @@ async function loginUser() {
       email: email.value,
       password: password.value
     })
-
+    auth.login(email.value, password.value)
     const response = await axios.post('/login', {
-      email: email.value,
-      password: password.value,
+    email: email.value,
+    password: password.value,
     })
 
     const token = response.data.token

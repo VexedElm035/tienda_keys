@@ -11,11 +11,6 @@ let keys = ref([]);
 let genres = ref([]);
 const abortController = ref(null);
 
-function getGameData(gameId, dat) {
-    const game = games.value.find(g => g.id === gameId);
-    return game ? game[dat] : ''; // por si no encuentra, que no truene
-}
-
 async function fetchData() {
   try {
     // Cancel any pending requests
@@ -92,12 +87,12 @@ onMounted(() => {
                 <div v-for="key in keys" :key="key.id">
                     <KeyCard
                         :id="key.id"
-                        :name="getGameData(key.game_id, 'name')"
+                        :name="key.game.name"
                         :price="key.price"
                         :platform="key.platform"
                         :region="key.region"
                         :seller="key.seller"
-                        :img="getGameData(key.game_id, 'img')"
+                        :img="key.game.img"
                         :rate="key.rate"
                         :deliverytime="key.delivery_time"
                     />
@@ -106,3 +101,4 @@ onMounted(() => {
         </section>
     </section>
 </template>
+
