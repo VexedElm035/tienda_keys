@@ -16,13 +16,12 @@ axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
-const imgurl = 'http://apie7.selh12.xyz/api/';
 const app = createApp(App)
+
 
 const pinia = createPinia()
 pinia.use(piniaPersist)
 app.use(PrimeVue)
-app.use(imgurl)
 app.use(pinia)
 app.use(router)
 app.use(axios)

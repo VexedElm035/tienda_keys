@@ -45,7 +45,7 @@
             <div class="bg-gray-800 p-6 rounded-lg flex flex-col md:flex-row gap-6">
             
                 <div class="md:w-1/2 flex justify-center">
-                    <img :src="`${imgurl}+${game.img}`" alt="Cyberpunk 2077" class="max-w-md h-96 object-cover rounded-lg mx-auto">
+                    <img :src="`http://apie7.selh12.xyz/api/${game.img}`" alt="Cyberpunk 2077" class="max-w-md h-96 object-cover rounded-lg mx-auto">
                 </div>
 
             

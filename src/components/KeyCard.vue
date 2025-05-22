@@ -31,7 +31,7 @@ const isHovered = ref(false);
         <div class="flex flex-col h-full relative">
             <!-- Image container with vignette effect -->
             <div class='relative overflow-hidden flex-shrink-0 h-[350px]'>
-                <img :src="`http://localhost:8080/api/${img}`" 
+                <img :src="`http://apie7.selh12.xyz/api/${img}`" 
                      alt="img" 
                      class="w-full h-full object-cover rounded-lg transition-all duration-300 mt-4"
                      :class="{'scale-105': isHovered, 'brightness-75': isHovered}">
