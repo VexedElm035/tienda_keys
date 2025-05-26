@@ -33,9 +33,9 @@ const regions = [
 // Debounced search
 const debouncedSearch = debounce((value) => {
   searchGame.value = value;
-}, 300);
+}, 500);
 
-// Fetch games with cancellation support
+// Fetch games from IGDB API
 async function fetchGames() {
   try {
     if (abortController.value) {
@@ -45,22 +45,58 @@ async function fetchGames() {
     abortController.value = new AbortController();
     isLoading.value = true;
     
-    const response = await axios.get('/games', {
+    const response = await axios.get('/igdb/search-games', {
+      params: {
+        limit: 50, // Aumentamos el límite para mejores resultados de búsqueda
+        search: searchGame.value
+      },
       signal: abortController.value.signal
     });
-    games.value = response.data;
+
+    // Transformamos los datos de IGDB al formato que espera tu formulario
+    games.value = response.data.map(game => {
+      // Si el juego ya viene transformado del backend (por si acaso)
+      if (game.img && typeof game.img === 'string') {
+        return game;
+      }
+      
+      // Transformación de datos de IGDB
+      return {
+        id: game.id,
+        name: game.name,
+        img: game.cover 
+          ? `https:${game.cover.url.replace('t_thumb', 't_cover_big')}` 
+          : null,
+        available_platforms: game.platforms 
+          ? game.platforms.map(p => p.abbreviation || p.name).join(' ') 
+          : 'PC', // Default a PC si no hay plataformas
+        description: game.summary || 'Descripción no disponible',
+        first_release_date: game.first_release_date 
+          ? new Date(game.first_release_date * 1000).toISOString().split('T')[0]
+          : null
+      };
+    });
   } catch (err) {
     if (!axios.isCancel(err)) {
-      console.error('Error al obtener los juegos', err);
+      console.error('Error al obtener los juegos de IGDB', err);
     }
   } finally {
     isLoading.value = false;
   }
 }
 
+// Actualizamos para buscar cuando cambia searchGame
+watch(searchGame, (newVal) => {
+  if (newVal && newVal.length >= 1) { // Solo buscamos si hay al menos 3 caracteres
+    fetchGames();
+  } else {
+    games.value = [];
+  }
+});
+
+// Resto del código permanece exactamente igual...
 // Lifecycle hooks
 onMounted(() => {
-  fetchGames();
   window.addEventListener('keydown', handleEscape);
 });
 
@@ -106,14 +142,22 @@ function chooseGame(game) {
   selectedGame.value = game;
 }
 
-async function status_window(){
-
-}
-
 async function addKey() {  
   try {
+    // Primero sincroniza el juego
+    const syncResponse = await axios.post('/igdb/sync-game', {
+      igdb_id: selectedGame.value.id
+    });
+
+    if (!syncResponse.data.success) {
+      throw new Error('Error al sincronizar el juego');
+    }
+
+    const localGame = syncResponse.data.game;
+
+    // Luego crea la game_key con el ID local
     const response = await axios.post('/gamekeys', {
-      game_id: selectedGame.value.id,
+      game_id: localGame.id, // Usa el ID local
       platform: platform.value,
       key: gameKey.value,
       expiration: expirationDate.value,
@@ -125,7 +169,6 @@ async function addKey() {
       state: state.value
     });
 
-    //await status_window()
     // Reset form after successful submission
     selectedGame.value = null;
     gameKey.value = '';
@@ -139,6 +182,7 @@ async function addKey() {
 }
 </script>
 
+<!-- El template permanece EXACTAMENTE igual -->
 <template>
   <section class="bg-gray-900 text-white min-h-screen flex flex-col">
     <section class="mx-auto mt-6">
@@ -168,7 +212,7 @@ async function addKey() {
               class="flex items-center gap-2 px-2 py-1 hover:bg-gray-600 cursor-pointer"
             >
               <img 
-                :src="`${$img_url}${game.img}`" 
+                :src="`${game.img}`" 
                 alt="game" 
                 class="w-8 h-8 rounded object-cover"
                 loading="lazy"
@@ -187,7 +231,7 @@ async function addKey() {
           <button @click="selectedGame=null" class=''>Seleccionar otro juego</button>
           <div class="flex items-center gap-2 my-2">
           <img 
-            :src="`${$img_url}${selectedGame.img}`" 
+            :src="`${selectedGame.img}`" 
             alt="selected" 
             class="w-10 h-10 object-cover rounded"
             loading="lazy"

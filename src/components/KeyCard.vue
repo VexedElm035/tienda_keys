@@ -10,11 +10,11 @@ function getFlagEmoji(countryCode) {
 defineProps(['id', 'name', 'platform', 'price', 'region', 'seller', 'img', 'rate', 'deliverytime']);
 
 let platformImages = {
-    ps4: "../img/cover_ps4.png",
-    ps5: "../img/cover_ps5.png",
+    PS4: "../img/cover_ps4.png",
+    PS5: "../img/cover_ps5.png",
     xboxone: "../img/cover_xboxone.png",
     xboxseries: "../img/cover_xboxseries.png",
-    switch: "../img/cover_switch.png",
+    Switch: "../img/cover_switch.png",
     steam: "../img/cover_steam.png",
 };
 
@@ -31,7 +31,7 @@ const isHovered = ref(false);
         <div class="flex flex-col h-full relative">
             <!-- Image container with vignette effect -->
             <div class='relative overflow-hidden flex-shrink-0 h-[350px]'>
-                <img :src="`${$img_url}${img}`" 
+                <img :src="`${img}`" 
                      alt="img" 
                      class="w-full h-full object-cover rounded-lg transition-all duration-300 mt-4"
                      :class="{'scale-105': isHovered, 'brightness-75': isHovered}">

@@ -52,7 +52,7 @@ onMounted(async () => {
         <div class="md:w-1/2 flex justify-center">
           <img
             v-if="game?.img"
-            :src="`${$img_url}/${game.img}`"
+            :src="`${game.img}`"
             class="max-w-md h-96 object-cover rounded-lg"
           />
         </div>
