@@ -22,12 +22,16 @@ async function loginUser() {
     })
     auth.login(email.value, password.value)
     const response = await axios.post('/login', {
-    email: email.value,
-    password: password.value,
+      email: email.value,
+      password: password.value,
     })
 
     const token = response.data.token
+    const avatar = response.data.user.avatar
+
     auth.token = token
+    auth.avatar = avatar
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
     console.log("Login exitoso:", response.data)

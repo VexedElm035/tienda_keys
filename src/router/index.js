@@ -25,6 +25,7 @@ import AdminGamesView from '../views/admin/GamesView.vue'
 import AdminGenresView from '../views/admin/GenresView.vue'
 import AdminUsersView from '../views/admin/UsersView.vue'
 import AdminManagementView from '../views/admin/ManagementView.vue'
+import OrderView from '@/views/OrderView.vue'
 
 
 const routes = [
@@ -40,6 +41,7 @@ const routes = [
       { path: 'catalog', name: 'catalog', component: CatalogView},
       { path: '/purchase', name: 'purchaseCart', component: PurchaseView },
       { path: '/purchase/:id', name: 'purchaseSingle', component: PurchaseView },
+      { path: '/orders', name: 'orders', component: OrderView },
 
     ],
   },

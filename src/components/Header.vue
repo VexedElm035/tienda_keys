@@ -3,13 +3,13 @@ import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { computed } from 'vue'
-import axios from 'axios'
 
 const props = defineProps({
   hasSidebar: {
     type: Boolean,
     default: true
-  }
+  },
+  isMenuVisible: Boolean
 })
 
 const auth = useAuthStore()
@@ -17,7 +17,7 @@ const userId = computed(() => auth.userId);
 
 const router = useRouter()
 const showMenu = ref(false)
-const id = 1
+const avatar = computed(() => auth.avatar)
 
 function toggleMenu() {
   showMenu.value = !showMenu.value
@@ -32,43 +32,65 @@ function logout() {
 
 <template>
   <header class="bg-gray-800 p-4 flex justify-between items-center relative">
-    <!-- Solo muestra el botón si tiene sidebar -->
-    <button v-if="hasSidebar" @click="$emit('toggle-menu')" class="text-white focus:outline-none">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
+
+    <button v-if="hasSidebar" @click="$emit('toggle-menu')" class="text-white focus:outline-none cursor-pointer" aria-label="Toggle menu">
+      <div class="w-5 h-[20px] relative hover:w-6 transition-all duration-300 ease-in-out">
+        <!-- Barra superior -->
+        <div class="bg-white w-full h-[2px] absolute transition-all duration-300 ease-in-out" :class="{'rotate-45 translate-y-[6px]': isMenuVisible, 'top-0': !isMenuVisible}"></div>
+        <!-- Barra del medio -->
+        <div class="bg-white w-full h-[2px] absolute top-[8px] transition-all duration-300 ease-in-out" :class="{'opacity-0': isMenuVisible}"></div>
+        <!-- Barra inferior -->
+        <div class="bg-white w-full h-[2px] absolute transition-all duration-300 ease-in-out" :class="{'-rotate-45 translate-y-[6px]': isMenuVisible, 'top-[16px]': !isMenuVisible}"></div>
+      </div>
     </button>
 
     <RouterLink to="/" class="text-2xl text-white font-bold">GameKeys</RouterLink>
 
     <nav>
       <ul class="flex gap-4 items-center relative">
-        <li><RouterLink to="/" class="text-gray-300 hover:text-yellow-400">Tienda</RouterLink></li>
-        <li><RouterLink to="/cart" class="text-gray-300 hover:text-yellow-400">
+        <!-- <li><RouterLink to="/cart" class="text-gray-300 hover:text-yellow-400 transition-all duration-300 ease-in-out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+            <path d="M3 7l9 6l9 -6" />
+          </svg>
+        </RouterLink></li>
+
+        <li><RouterLink to="/cart" class="text-gray-300 hover:text-yellow-400 transition-all duration-300 ease-in-out">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
             <path d="M6 2a1 1 0 0 1 .993 .883l.007 .117v1.068l13.071 .935a1 1 0 0 1 .929 1.024l-.01 .114l-1 7a1 1 0 0 1 -.877 .853l-.113 .006h-12v2h10a3 3 0 1 1 -2.995 3.176l-.005 -.176l.005 -.176c.017 -.288 .074 -.564 .166 -.824h-5.342a3 3 0 1 1 -5.824 1.176l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-12.17h-1a1 1 0 0 1 -.993 -.883l-.007 -.117a1 1 0 0 1 .883 -.993l.117 -.007h2zm0 16a1 1 0 1 0 0 2a1 1 0 0 0 0 -2zm11 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2z"></path>
           </svg>
-
-        </RouterLink></li>
+        </RouterLink></li> -->
 
         <template v-if="!auth.isLoggedIn">
-          <li><RouterLink to="/login" class="text-gray-300 hover:text-yellow-400">Iniciar Sesión</RouterLink></li>
-          <li><RouterLink to="/signup" class="text-gray-300 hover:text-yellow-400">Registrarse</RouterLink></li>
+          <li class="relative group"><RouterLink to="/login" class="text-gray-300 hover:text-yellow-400 transition-colors duration-300">Iniciar Sesión</RouterLink>
+          <div class="bg-yellow-400 h-[1px] absolute bottom-0 left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out w-0 group-hover:w-full">
+          </div></li> 
+
+
+          <li><RouterLink to="/signup" class="text-gray-200 hover:bg-blue-600 hover:text-white bg-blue-500 p-2 rounded-lg transition-all duration-300 ease-in-out">Registrarse</RouterLink></li>
         </template>
 
         <template v-else>
+<li><RouterLink to="/cart" class="text-gray-300 hover:text-yellow-400 transition-all duration-300 ease-in-out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+            <path d="M3 7l9 6l9 -6" />
+          </svg>
+        </RouterLink></li>
+
+        <li><RouterLink to="/cart" class="text-gray-300 hover:text-yellow-400 transition-all duration-300 ease-in-out">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M6 2a1 1 0 0 1 .993 .883l.007 .117v1.068l13.071 .935a1 1 0 0 1 .929 1.024l-.01 .114l-1 7a1 1 0 0 1 -.877 .853l-.113 .006h-12v2h10a3 3 0 1 1 -2.995 3.176l-.005 -.176l.005 -.176c.017 -.288 .074 -.564 .166 -.824h-5.342a3 3 0 1 1 -5.824 1.176l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-12.17h-1a1 1 0 0 1 -.993 -.883l-.007 -.117a1 1 0 0 1 .883 -.993l.117 -.007h2zm0 16a1 1 0 1 0 0 2a1 1 0 0 0 0 -2zm11 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2z"></path>
+          </svg>
+        </RouterLink></li>
+
+
           <li class="relative">
-            <button @click="toggleMenu" class="text-gray-300 hover:text-yellow-400 focus:outline-none">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4
-                         v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
+            <button @click="toggleMenu" class="text-gray-300 hover:text-yellow-400 focus:outline-none cursor-pointer w-6 h-6">
+              <img :src="`${avatar}`" alt="avatar" class="w-full h-full rounded-full object-cover">
             </button>
             
-            <ul
-              v-if="showMenu"
-              class="absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded-lg shadow-lg z-50"
-            >
+            <ul v-if="showMenu" class="absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded-lg shadow-lg z-50">
               <li>
                 <RouterLink :to="`/profile/${userId}`" class="block px-4 py-2 hover:bg-gray-600">Perfil</RouterLink>
               </li>
@@ -76,9 +98,7 @@ function logout() {
                 <RouterLink to="/orders" class="block px-4 py-2 hover:bg-gray-600">Historial de pedidos</RouterLink>
               </li>
               <li>
-                <button @click="logout" class="block w-full text-left px-4 py-2 hover:bg-gray-600">
-                  Cerrar Sesión
-                </button>
+                <button @click="logout" class="block w-full text-left px-4 py-2 hover:bg-gray-600">Cerrar Sesión</button>
               </li>
             </ul>
           </li>

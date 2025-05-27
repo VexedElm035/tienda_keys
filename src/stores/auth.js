@@ -8,6 +8,7 @@ export const useAuthStore = defineStore('auth',
     const userId = ref('')
     const userName = ref('')
     const token = ref('')
+    const avatar = ref('')
 
     function login(user, id) {
       isLoggedIn.value = true
@@ -15,14 +16,14 @@ export const useAuthStore = defineStore('auth',
       userId.value = id
     }
 
-    async function logout() {
-      await axios.post('../logout')
+    async function logout() { 
       isLoggedIn.value = false
       userName.value = ''
       userId.value = ''
+      await axios.post('../logout')
     }
 
-    return { isLoggedIn, userName, userId, token, login, logout }
+    return { isLoggedIn, userName, userId, token, login, logout , avatar}
   },
   {
     persist: true
