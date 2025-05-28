@@ -41,7 +41,7 @@
         </section>
 
     
-        <section class="container mx-auto p-6 flex-grow">
+        <section class="container mx-auto p-6 flex-grow ">
             <div class="bg-gray-800 p-6 rounded-lg flex flex-col md:flex-row gap-6">
             
                 <div class="md:w-1/2 flex justify-center">
@@ -62,7 +62,7 @@
                         <RouterLink to="/" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400">Volver a la Tienda</RouterLink>
                     </div>
 
-                    <div class="bg-gray-900 text-white flex flex-col gap-4 mt-6">
+                    <div class="bg-gray-900 text-white flex flex-col gap-4 mt-6 p-3 rounded-lg">
                         <h3 class="text-xl font-semibold mb-2">Llaves disponibles:</h3>
                         <HorizontalKeyCard
                             v-for="key in gameKeys"

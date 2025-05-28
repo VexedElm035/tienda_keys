@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import axios from 'axios'
-import { identity } from 'lodash'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -14,30 +13,30 @@ const error = ref('')
 
 async function loginUser() {
   try {
-
     await axios.get('../sanctum/csrf-cookie')
-    await axios.post('../login', {
+    const response = await axios.post('../login', {
       email: email.value,
       password: password.value
     })
-    auth.login(email.value, password.value)
-    const response = await axios.post('/login', {
-      email: email.value,
-      password: password.value,
-    })
 
-    const token = response.data.token
-    const avatar = response.data.user.avatar
+    // Obtener datos del usuario incluyendo el rol
+    const userResponse = await axios.get('../api/user')
+    const user = userResponse.data
 
-    auth.token = token
-    auth.avatar = avatar
+    auth.login(user.username, user.id, user.role)
+    auth.token = response.data.token
+    auth.avatar = user.avatar
 
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`
 
-    console.log("Login exitoso:", response.data)
+    console.log("Login exitoso:", user)
 
-    auth.login(response.data.user.username, response.data.user.id) // si guardas el usuario en el store
-    router.push('/')
+    // Redirección basada en el rol
+    if (user.role === 'admin') {
+      router.push('/admin')
+    } else {
+      router.push('/')
+    }
   } catch (err) {
     error.value = 'Login inválido'
     console.error("Error al iniciar sesión:", err)

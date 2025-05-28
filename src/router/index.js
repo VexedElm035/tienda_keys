@@ -20,7 +20,6 @@ import SellerView from '../views/SellerView.vue'
 import KeySellerView from '../views/KeySellerView.vue'
 
 import AdminView from '../views/admin/AdminView.vue'
-import AdminLogin from '../views/admin/LoginView.vue'
 import AdminGamesView from '../views/admin/GamesView.vue'
 import AdminGenresView from '../views/admin/GenresView.vue'
 import AdminUsersView from '../views/admin/UsersView.vue'
@@ -38,10 +37,10 @@ const routes = [
       { path: 'key/:id', name: 'keyDetails', component: KeyDetailsView },
       { path: 'cart', name: 'cart', component: CartView },
       { path: 'sales', name: 'sales', component: SalesView},
-      { path: 'catalog', name: 'catalog', component: CatalogView},
-      { path: '/purchase', name: 'purchaseCart', component: PurchaseView },
-      { path: '/purchase/:id', name: 'purchaseSingle', component: PurchaseView },
-      { path: '/orders', name: 'orders', component: OrderView },
+      { path: 'catalog', name: 'catalog', component: CatalogView, props: (route) => ({ query: route.query.q })}, //aqui iria la ruta con el query
+      { path: 'purchase', name: 'purchaseCart', component: PurchaseView },
+      { path: 'purchase/:id', name: 'purchaseSingle', component: PurchaseView },
+      { path: 'orders', name: 'orders', component: OrderView },
 
     ],
   },
@@ -61,7 +60,6 @@ const routes = [
     component: UserLayout, 
     children: [
       { path: '', name: 'admin', component: AdminView },
-      { path: 'login', name: 'adminlogin', component: AdminLogin },
       
       { path: 'games', name: 'admingames', component: AdminGamesView },
       { path: 'genres', name: 'admingenres', component: AdminGenresView },
@@ -77,20 +75,52 @@ const router = createRouter({
   routes,
 })
 
-const protectedRoutes = ['cart', 'admin', 'profile', 'purchase/:id']
+const roleRoutes = {
+  admin: ['admin', 'admingames', 'admingenres', 'adminusers', 'adminmanagement'],
+  seller: ['dashboard', 'sell'],
+  user: ['profile', 'cart', 'purchaseCart', 'purchaseSingle', 'orders']
+}
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
 
-  if (!auth.isLoggedIn && protectedRoutes.includes(to.name)) {
+  // Si no está logueado y la ruta es protegida
+  if (!auth.isLoggedIn && (roleRoutes.admin.includes(to.name) || 
+                          roleRoutes.seller.includes(to.name) || 
+                          roleRoutes.user.includes(to.name))) {
     next({ name: 'login' })
-
-  } else if (auth.isLoggedIn && to.name === 'login') {
-    next({ name: 'home' })
-
-  } else {
-    next()
+    return
   }
+
+  // Si está logueado pero intenta ir a login/signup
+  if (auth.isLoggedIn && (to.name === 'login' || to.name === 'signup')) {
+    next({ name: 'home' })
+    return
+  }
+
+  // Verificación de roles
+  if (auth.isLoggedIn) {
+    // Admin solo puede acceder a rutas de admin
+    if (auth.userRole === 'admin' && !to.path.startsWith('/admin')) {
+      next({ name: 'admin' })
+      return
+    }
+
+    // Seller no puede acceder a rutas de admin
+    if (auth.userRole === 'seller' && roleRoutes.admin.includes(to.name)) {
+      next({ name: 'home' })
+      return
+    }
+
+    // User no puede acceder a rutas de admin ni seller
+    if (auth.userRole === 'user' && 
+        (roleRoutes.admin.includes(to.name) || roleRoutes.seller.includes(to.name))) {
+      next({ name: 'home' })
+      return
+    }
+  }
+
+  next()
 })
 
 

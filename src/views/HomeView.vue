@@ -6,6 +6,24 @@ import HorizontalCarousel from '@/components/Carrousel.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 import { onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const searchQuery = ref('');
+const handleSearch = () => {
+  if (searchQuery.value.trim()) {
+    router.push({
+      name: 'catalog',
+      query: { q: searchQuery.value.trim() }
+    });
+  }
+};
+
+const onKeyPress = (e) => {
+  if (e.key === 'Enter') {
+    handleSearch();
+  }
+};
 
 let games = ref([]);
 let keys = ref([]);
@@ -57,16 +75,32 @@ onUnmounted(() => {
 
 <template>
     <section class="bg-gray-900 text-white flex flex-col min-h-screen flex-1">
-        <section class="bg-yellow-500 text-center py-10">
+        <section class="bg-yellow-500 text-center py-10 h-25">
             <h2 class="text-2xl font-bold">Ofertas Especiales en Juegos Digitales</h2>
         </section>
         <section class="container mx-auto p-6">
-            <input type="text" placeholder="Buscar juegos..." class="w-full p-2 rounded-lg text-gray-100 bg-gray-700">
-        </section>
+    <div class="relative">
+      <input 
+        v-model="searchQuery"
+        @keypress="onKeyPress"
+        type="text" 
+        placeholder="Buscar juegos..." 
+        class="w-full p-2 pl-10 rounded-lg text-gray-100 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+      >
+      <button 
+        @click="handleSearch"
+        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-yellow-400"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+    </div>
+  </section>
 
         <FeaturedCarrousel />
 
-        <section class="container mx-auto p-6 flex flex-col items-center">
+        <!-- <section class="container mx-auto p-6 flex flex-col items-center">
             <h2 class="text-2xl font-bold text-center">Categorías</h2>
             <div class="flex max-w-[100%] gap-4 pt-4 pb-4 justify-center">
                 <div v-for="genre in genres.slice(0, 2)" :key="genre.id">
@@ -74,22 +108,10 @@ onUnmounted(() => {
                         class="bg-yellow-500 text-gray-900 uppercase px-4 py-2 rounded-lg hover:bg-yellow-400">{{ genre.name }}</button>
                 </div>
             </div>
-        </section>
+        </section> -->
 
-        <!-- Carrusel de Juegos -->
-        <section class="container mx-auto p-6 flex-grow">
-            <h2 class="text-2xl font-bold text-center mb-6">Juegos Destacados</h2>
-            <HorizontalCarousel :items="games" :loading="isLoading" placeholder-type="game">
-                <template #default="{ items }">
-                    <div v-for="game in items" :key="game.id" class="flex-shrink-0 w-64">
-                        <GameCard :id="game.id" :title="game.name" :img="game.img" />
-                    </div>
-                </template>
-            </HorizontalCarousel>
-        </section>
-
-        <!-- Carrusel de Keys -->
-        <section class="container mx-auto p-6 flex-grow">
+         <!-- Carrusel de Keys -->
+        <section class="container mx-auto p-2 mt-10 flex-grow">
             <h2 class="text-2xl font-bold text-center mb-6">Llaves Destacadas</h2>
             <HorizontalCarousel :items="keys" :loading="isLoadingKeys" placeholder-type="key">
                 <template #default="{ items }">
@@ -101,6 +123,20 @@ onUnmounted(() => {
                 </template>
             </HorizontalCarousel>
         </section>
+
+        <!-- Carrusel de Juegos -->
+        <section class="container mx-auto p-2 flex-grow h-120">
+            <h2 class="text-2xl font-bold text-center mb-6">Juegos Destacados</h2>
+            <HorizontalCarousel :items="games" :loading="isLoading" placeholder-type="game">
+                <template #default="{ items }">
+                    <div v-for="game in items" :key="game.id" class="flex-shrink-0 w-55 h-85 hover:w-60 hover:h-90 transition-all duration-300 ease-in-out cursor-pointer">
+                        <GameCard :id="game.id" :title="game.name" :img="game.img" />
+                    </div>
+                </template>
+            </HorizontalCarousel>
+        </section>
+
+       
     </section>
 </template>
 

@@ -49,7 +49,7 @@ const isHovered = ref(false);
                     <div class="flex">
                         
                         <h4 class="text-sm text-green-500 font-bold uppercase mb-1">{{ region }}</h4>
-                        <p class="ml-3">{{getFlagEmoji(region)}}</p>
+                        <!-- <p class="ml-3">{{getFlagEmoji(region)}}</p> -->
                     </div>
                     
                    
