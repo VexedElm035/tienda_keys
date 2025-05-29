@@ -53,31 +53,27 @@ async function signupUser() {
         <h2 class="text-2xl font-bold text-center mb-6">Registro</h2>
         <form @submit.prevent="signupUser">
           <label for="username">Nombre de usuario:</label>
-          <input v-model="username" type="text" placeholder="user1234" class="w-full p-2 mb-3 rounded-lg text-white-900">
+          <input v-model="username" type="text" placeholder="user1234"
+            class="w-full p-2 mb-3 rounded-lg text-white-900">
 
           <label for="email">Correo electrónico:</label>
-          <input v-model="email" type="email" placeholder="e.g user_1234@mail.com" class="w-full p-2 mb-3 rounded-lg text-white-900">
+          <input v-model="email" type="email" placeholder="e.g user_1234@mail.com"
+            class="w-full p-2 mb-3 rounded-lg text-white-900">
 
           <label for="password">Contraseña:</label>
-          <input v-model="password" type="password" placeholder="******" class="w-full p-2 mb-3 rounded-lg text-white-900">
+          <input v-model="password" type="password" placeholder="******"
+            class="w-full p-2 mb-3 rounded-lg text-white-900">
 
           <label for="password_confirm">Confirmar Contraseña:</label>
-          <input v-model="password_confirm" type="password" placeholder="******" class="w-full p-2 mb-3 rounded-lg text-white-900">
+          <input v-model="password_confirm" type="password" placeholder="******"
+            class="w-full p-2 mb-3 rounded-lg text-white-900">
 
           <label class="block mb-2">Selecciona un avatar:</label>
           <div class="grid grid-cols-5 gap-2 mb-4">
-            <div
-              v-for="avatar in avatars"
-              :key="avatar"
-              class="cursor-pointer border-2 rounded-lg p-1"
+            <div v-for="avatar in avatars" :key="avatar" class="cursor-pointer border-2 rounded-lg p-1"
               :class="selectedAvatar === avatar ? 'border-yellow-500' : 'border-transparent'"
-              @click="selectedAvatar = avatar"
-            >
-              <img
-                :src="`${avatar}`"
-                alt="avatar"
-                class="w-full rounded"
-              />
+              @click="selectedAvatar = avatar">
+              <img :src="`${avatar}`" alt="avatar" class="w-full rounded" />
             </div>
           </div>
 
@@ -93,7 +89,8 @@ async function signupUser() {
             </label>
           </div>
 
-          <button class="w-full bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400">Registrarse</button>
+          <button
+            class="w-full bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400">Registrarse</button>
           <p v-if="error" class="text-red-400 mt-2 text-sm">{{ error }}</p>
         </form>
 

@@ -26,12 +26,12 @@ const fetchSellerData = async () => {
   try {
     isLoading.value = true;
     isLoadingKeys.value = true;
-    
+
     // Obtener estadísticas
     const statsResponse = await axios.get(`/sellers/${userId.value}/stats`);
     console.log('Stats response:', statsResponse.data); // Para depuración
     stats.value = statsResponse.data;
-    
+
     // Obtener llaves disponibles
     const availableResponse = await axios.get('/gamekeys-s', {
       params: {
@@ -40,7 +40,7 @@ const fetchSellerData = async () => {
       }
     });
     availableKeys.value = availableResponse.data;
-    
+
     // Obtener llaves vendidas
     const soldResponse = await axios.get('/gamekeys', {
       params: {
@@ -49,7 +49,7 @@ const fetchSellerData = async () => {
       }
     });
     soldKeys.value = soldResponse.data;
-    
+
   } catch (err) {
     console.error('Error fetching seller data:', err);
     error.value = err.response?.data?.message || 'Error al cargar los datos';
@@ -121,10 +121,7 @@ onMounted(() => {
       <section class="mb-10">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-2xl font-bold">Tus Llaves Disponibles</h2>
-          <RouterLink 
-            to="/dashboard/sell" 
-            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
-          >
+          <RouterLink to="/dashboard/sell" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
             Agregar Nueva Llave
           </RouterLink>
         </div>
@@ -135,39 +132,32 @@ onMounted(() => {
 
         <div v-else-if="availableKeys.length === 0" class="bg-gray-800/50 p-8 rounded-lg text-center">
           <p class="text-gray-300 text-lg mb-4">No tienes llaves disponibles actualmente</p>
-          <RouterLink 
-            to="/dashboard/sell" 
-            class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg"
-          >
+          <RouterLink to="/dashboard/sell"
+            class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg">
             Vender una llave
           </RouterLink>
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div 
-            v-for="key in availableKeys" 
-            :key="key.id" 
-            class="bg-gray-800 p-4 rounded-lg hover:shadow-lg transition-all border border-gray-700"
-          >
+          <div v-for="key in availableKeys" :key="key.id"
+            class="bg-gray-800 p-4 rounded-lg hover:shadow-lg transition-all border border-gray-700">
             <div class="flex justify-between items-start mb-2">
               <h3 class="text-lg font-bold">{{ key.game?.name }}</h3>
               <span class="px-2 py-1 bg-gray-700 rounded text-xs">{{ key.platform }}</span>
             </div>
-            
+
             <div class="flex justify-between items-center mb-3">
               <span class="text-yellow-400 font-bold">${{ key.price }}</span>
               <span class="text-sm bg-gray-700 px-2 py-1 rounded">{{ key.region }}</span>
             </div>
-            
+
             <div class="text-sm space-y-1 text-gray-400 mb-4">
               <p>Publicado: {{ new Date(key.created_at).toLocaleDateString() }}</p>
               <p>Tiempo de entrega: {{ key.delivery_time }}</p>
             </div>
-            
-            <RouterLink 
-              :to="{ name: 'keyDetails', params: { id: key.id } }" 
-              class="block text-center bg-blue-500 hover:bg-blue-600 text-white py-2 rounded transition-colors"
-            >
+
+            <RouterLink :to="{ name: 'keyDetails', params: { id: key.id } }"
+              class="block text-center bg-blue-500 hover:bg-blue-600 text-white py-2 rounded transition-colors">
               Ver detalles
             </RouterLink>
           </div>
@@ -177,7 +167,7 @@ onMounted(() => {
       <!-- Sección de Llaves Vendidas -->
       <section>
         <h2 class="text-2xl font-bold mb-4">Tus Llaves Vendidas</h2>
-        
+
         <div v-if="isLoadingKeys" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="n in 3" :key="n" class="bg-gray-800 p-4 rounded-lg animate-pulse h-48"></div>
         </div>

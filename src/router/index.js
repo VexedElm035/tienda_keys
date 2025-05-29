@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 //Layouts
 import Layout from '../layouts/Layout.vue'
 import UserLayout from '../layouts/UserLayout.vue'
+import AdminLayout from '../layouts/AdminLayout.vue'
 //Vistas
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -25,6 +26,9 @@ import AdminGenresView from '../views/admin/GenresView.vue'
 import AdminUsersView from '../views/admin/UsersView.vue'
 import AdminManagementView from '../views/admin/ManagementView.vue'
 import OrderView from '@/views/OrderView.vue'
+import InboxView from '@/views/InboxView.vue'
+
+import PurchasesView from '@/views/admin/PurchasesView.vue'
 
 
 const routes = [
@@ -41,6 +45,7 @@ const routes = [
       { path: 'purchase', name: 'purchaseCart', component: PurchaseView },
       { path: 'purchase/:id', name: 'purchaseSingle', component: PurchaseView },
       { path: 'orders', name: 'orders', component: OrderView },
+      { path: 'inbox', name: 'inbox', component: InboxView },
 
     ],
   },
@@ -57,12 +62,13 @@ const routes = [
   },
   {
     path: '/admin/',
-    component: UserLayout, 
+    component: AdminLayout, 
     children: [
       { path: '', name: 'admin', component: AdminView },
       
       { path: 'games', name: 'admingames', component: AdminGamesView },
       { path: 'genres', name: 'admingenres', component: AdminGenresView },
+      { path: 'purchases', name: 'adminpurchases', component: PurchasesView },
       { path: 'users', name: 'adminusers', component: AdminUsersView },
       { path: 'management', name: 'adminmanagement', component: AdminManagementView },
     ],
@@ -84,35 +90,28 @@ const roleRoutes = {
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
 
-  // Si no está logueado y la ruta es protegida
-  if (!auth.isLoggedIn && (roleRoutes.admin.includes(to.name) || 
-                          roleRoutes.seller.includes(to.name) || 
-                          roleRoutes.user.includes(to.name))) {
+  if (!auth.isLoggedIn && (roleRoutes.admin.includes(to.name) || roleRoutes.seller.includes(to.name) || roleRoutes.user.includes(to.name))) {
     next({ name: 'login' })
     return
   }
 
-  // Si está logueado pero intenta ir a login/signup
   if (auth.isLoggedIn && (to.name === 'login' || to.name === 'signup')) {
     next({ name: 'home' })
     return
   }
 
-  // Verificación de roles
   if (auth.isLoggedIn) {
-    // Admin solo puede acceder a rutas de admin
+    
     if (auth.userRole === 'admin' && !to.path.startsWith('/admin')) {
       next({ name: 'admin' })
       return
     }
 
-    // Seller no puede acceder a rutas de admin
     if (auth.userRole === 'seller' && roleRoutes.admin.includes(to.name)) {
       next({ name: 'home' })
       return
     }
 
-    // User no puede acceder a rutas de admin ni seller
     if (auth.userRole === 'user' && 
         (roleRoutes.admin.includes(to.name) || roleRoutes.seller.includes(to.name))) {
       next({ name: 'home' })

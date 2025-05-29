@@ -12,7 +12,7 @@ let launch_date = ref('');
 let publisher = ref('');
 let available_platforms = ref('');
 let genre_id = ref('');
-let filename = ref ('');
+let filename = ref('');
 
 
 const file = ref(null);
@@ -28,17 +28,17 @@ const upload = async () => {
     };
     const formData = new FormData();
     formData.append('file', file.value);
-    try{
+    try {
         const response = await axios.post('/upload', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        console.log('File uploaded successfully', response.data);        
+        console.log('File uploaded successfully', response.data);
         return response.data.path;
-        
-        
-    }catch(error){  
+
+
+    } catch (error) {
         console.error('error uploading file', error);
     };
 };
@@ -61,7 +61,7 @@ async function deleteGame(id) {
     }
 }
 
-async function addGame() {  
+async function addGame() {
     try {
         filename.value = await upload();
         const response = await axios.post('/games', {
@@ -120,63 +120,70 @@ async function editGame() {
 </script>
 
 <template>
-<section class="bg-gray-900 text-white flex flex-col min-h-screen">
-    <RouterLink to="/admin" class="hover:text-yellow-400">< Volver</RouterLink>
-    <main class="container mx-auto p-6 flex-grow">
-        <button @click="action = 'add'; name = ''; id_game = '';" class="text-sm flex-1 bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400">Agregar</button>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="bg-gray-800 p-6 rounded-lg">
-                <h3 class="text-xl font-bold mb-4">Juegos</h3>
-                <ul class="space-y-2">
-                    <div v-for="game in games" :key="game.id">
-                        <li>{{ game.name }}</li>
-                        <button @click="selectGame(game.id)" class="text-center text-sm bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400">Editar</button>
-                        <button @click="deleteGame(game.id)" class="text-sm flex-1 bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400">Eliminar</button>
+    <section class="bg-gray-900 text-white flex flex-col min-h-screen">
+        <RouterLink to="/admin" class="hover:text-yellow-400">
+            < Volver</RouterLink>
+                <main class="container mx-auto p-6 flex-grow">
+                    <button @click="action = 'add'; name = ''; id_game = '';"
+                        class="text-sm flex-1 bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400">Agregar</button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4">Juegos</h3>
+                            <ul class="space-y-2">
+                                <div v-for="game in games" :key="game.id">
+                                    <li>{{ game.name }}</li>
+                                    <button @click="selectGame(game.id)"
+                                        class="text-center text-sm bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400">Editar</button>
+                                    <button @click="deleteGame(game.id)"
+                                        class="text-sm flex-1 bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400">Eliminar</button>
+                                </div>
+                            </ul>
+                        </div>
                     </div>
-                </ul>
-            </div>
-        </div>
-      
 
-      
+                    <div class="card flex flex-col gap-6 items-center justify-center">
 
-        <div class="card flex flex-col gap-6 items-center justify-center">
-       
-        
-    </div>
+                    </div>
+
+                </main>
+                <div>
+                    <form @submit.prevent="action === 'add' ? addGame() : editGame()"
+                        class="bg-gray-800 p-6 rounded-lg">
+                        <label for="name">Nombre:</label>
+                        <input v-model="name" id="name" type="text" class="w-full p-2 mb-3 rounded-lg text-white-900"
+                            placeholder="e.g RPG">
+
+                        <label for="img">Imagen</label>
+                        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000"
+                            @select="onFileSelect" />
 
 
+                        <label for="description">Descripcion:</label>
+                        <textarea v-model="description" id="description" type="fieldset"
+                            class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG"></textarea>
 
-    </main>
-    <div>
-        <form @submit.prevent="action === 'add' ? addGame() : editGame()" class="bg-gray-800 p-6 rounded-lg">
-            <label for="name">Nombre:</label>
-            <input v-model="name" id="name" type="text" class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
-            
-            <label for="img">Imagen</label>
-            <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @select="onFileSelect" />
-            
-       
-            <label for="description">Descripcion:</label>
-            <textarea v-model="description" id="description" type="fieldset" class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG"></textarea>
-            
-            <label for="launch_date">Fecha de lanzamiento</label>
-            <input v-model="launch_date" id="launch_date" type="date" class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
-            
-            <label for="publisher">Desarrollador</label>
-            <input v-model="publisher" id="publisher" type="text" class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
-            
-            <label for="available_platforms">Plataformas disponibles</label>
-            <input v-model="available_platforms" id="available_platforms" type="text" class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
-            
-            <label for="genre_id">Genero</label>
-            <input v-model="genre_id" id="genre_id" type="number" class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
-            
+                        <label for="launch_date">Fecha de lanzamiento</label>
+                        <input v-model="launch_date" id="launch_date" type="date"
+                            class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
 
-            <button type="submit" class="text-center text-sm bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400">
-                {{ action === 'add' ? 'Agregar' : 'Editar' }}
-            </button>
-        </form>
-    </div>
-</section>
+                        <label for="publisher">Desarrollador</label>
+                        <input v-model="publisher" id="publisher" type="text"
+                            class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
+
+                        <label for="available_platforms">Plataformas disponibles</label>
+                        <input v-model="available_platforms" id="available_platforms" type="text"
+                            class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
+
+                        <label for="genre_id">Genero</label>
+                        <input v-model="genre_id" id="genre_id" type="number"
+                            class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
+
+
+                        <button type="submit"
+                            class="text-center text-sm bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400">
+                            {{ action === 'add' ? 'Agregar' : 'Editar' }}
+                        </button>
+                    </form>
+                </div>
+    </section>
 </template>

@@ -7,7 +7,7 @@ export const useAuthStore = defineStore('auth',
     const isLoggedIn = ref(false)
     const userId = ref('')
     const userName = ref('')
-    const userRole = ref('') // 'admin', 'seller' o 'user'
+    const userRole = ref('')
     const token = ref('')
     const avatar = ref('')
 
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth',
       isLoggedIn, 
       userName, 
       userId, 
-      userRole, // Exportamos el rol
+      userRole,
       token, 
       avatar,
       login, 

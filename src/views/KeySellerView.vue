@@ -41,10 +41,10 @@ async function fetchGames() {
     if (abortController.value) {
       abortController.value.abort();
     }
-    
+
     abortController.value = new AbortController();
     isLoading.value = true;
-    
+
     const response = await axios.get('/igdb/search-games', {
       params: {
         limit: 50, // Aumentamos el límite para mejores resultados de búsqueda
@@ -59,19 +59,19 @@ async function fetchGames() {
       if (game.img && typeof game.img === 'string') {
         return game;
       }
-      
+
       // Transformación de datos de IGDB
       return {
         id: game.id,
         name: game.name,
-        img: game.cover 
-          ? `https:${game.cover.url.replace('t_thumb', 't_cover_big')}` 
+        img: game.cover
+          ? `https:${game.cover.url.replace('t_thumb', 't_cover_big')}`
           : null,
-        available_platforms: game.platforms 
-          ? game.platforms.map(p => p.abbreviation || p.name).join(' ') 
+        available_platforms: game.platforms
+          ? game.platforms.map(p => p.abbreviation || p.name).join(' ')
           : 'PC', // Default a PC si no hay plataformas
         description: game.summary || 'Descripción no disponible',
-        first_release_date: game.first_release_date 
+        first_release_date: game.first_release_date
           ? new Date(game.first_release_date * 1000).toISOString().split('T')[0]
           : null
       };
@@ -142,7 +142,7 @@ function chooseGame(game) {
   selectedGame.value = game;
 }
 
-async function addKey() {  
+async function addKey() {
   try {
     // Primero sincroniza el juego
     const syncResponse = await axios.post('/igdb/sync-game', {
@@ -190,129 +190,75 @@ async function addKey() {
       <form @submit.prevent="addKey()">
 
         <div v-if="!selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl">
-      
-        <label class="block mb-2">Juego</label>
-        <div class="relative mb-2">
-          <input
-            type="text"
-            :value="searchGame"
-            @input="(e) => debouncedSearch(e.target.value)"
-            placeholder="Buscar juego..."
-            class="w-full p-2 rounded text-gray-100"
-            @keydown.esc="searchGame = ''"
-          />
-          <ul 
-            v-if="searchGame && filteredGames.length" 
-            class="absolute z-10 bg-gray-700 w-full rounded max-h-64 overflow-auto shadow-lg"
-          >
-            <li
-              v-for="game in filteredGames"
-              :key="game.id"
-              @click="chooseGame(game)"
-              class="flex items-center gap-2 px-2 py-1 hover:bg-gray-600 cursor-pointer"
-            >
-              <img 
-                :src="`${game.img}`" 
-                alt="game" 
-                class="w-8 h-8 rounded object-cover"
-                loading="lazy"
-              />
-              <span>{{ game.name }}</span>
-            </li>
-          </ul>
-          <div v-if="isLoading" class="absolute right-2 top-2">
-            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+
+          <label class="block mb-2">Juego</label>
+          <div class="relative mb-2">
+            <input type="text" :value="searchGame" @input="(e) => debouncedSearch(e.target.value)"
+              placeholder="Buscar juego..." class="w-full p-2 rounded text-gray-100" @keydown.esc="searchGame = ''" />
+            <ul v-if="searchGame && filteredGames.length"
+              class="absolute z-10 bg-gray-700 w-full rounded max-h-64 overflow-auto shadow-lg">
+              <li v-for="game in filteredGames" :key="game.id" @click="chooseGame(game)"
+                class="flex items-center gap-2 px-2 py-1 hover:bg-gray-600 cursor-pointer">
+                <img :src="`${game.img}`" alt="game" class="w-8 h-8 rounded object-cover" loading="lazy" />
+                <span>{{ game.name }}</span>
+              </li>
+            </ul>
+            <div v-if="isLoading" class="absolute right-2 top-2">
+              <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            </div>
           </div>
-        </div>
         </div>
 
 
         <div v-if="selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl mx-auto">
-          <button @click="selectedGame=null" class=''>Seleccionar otro juego</button>
+          <button @click="selectedGame = null" class=''>Seleccionar otro juego</button>
           <div class="flex items-center gap-2 my-2">
-          <img 
-            :src="`${selectedGame.img}`" 
-            alt="selected" 
-            class="w-10 h-10 object-cover rounded"
-            loading="lazy"
-          />
-          <span>{{ selectedGame.name }}</span>
+            <img :src="`${selectedGame.img}`" alt="selected" class="w-10 h-10 object-cover rounded" loading="lazy" />
+            <span>{{ selectedGame.name }}</span>
           </div>
         </div>
         <div v-if="selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl">
-        <label class="block mb-2">Plataforma</label>
-        <select 
-          v-model="platform" 
-          class="w-full p-2 rounded text-gray-100 mb-2"
-          :disabled="!selectedGame"
-        >
-          <option v-for="p in availablePlatforms" :key="p" :value="p">
-            {{ p.toUpperCase() }}
-          </option>
-        </select>
-    
-        <label class="block mb-2">Key</label>
-        <input
-          type="text"
-          :value="gameKey"
-          @input="formatKeyInput"
-          placeholder="XXXXX-YYYYY-ZZZZZ"
-          class="w-full p-2 rounded text-gray-100 mb-2"
-          :disabled="!selectedGame"
-          maxlength="17"
-        />
-    
-        <label class="block mb-2">Fecha de caducidad</label>
-        <input 
-          type="date" 
-          v-model="expirationDate" 
-          class="w-full p-2 rounded text-gray-100 mb-2"
-          :disabled="!selectedGame"
-        />
-    
-        <label class="block mb-2">Precio</label>
-        <input
-          type="number"
-          v-model.number="price"
-          placeholder="$0.00"
-          class="w-full p-2 rounded text-gray-100 mb-2"
-          :disabled="!selectedGame"
-          min="0"
-          step="0.01"
-        />
-        <div class="text-red-400 text-sm mb-4">Tarifa (8%): ${{ tax }}</div>
-    
-        <label class="block mb-2">Tipo de entrega</label>
-        <select 
-          v-model="deliveryTime" 
-          class="w-full p-2 rounded text-gray-100 mb-2"
-          :disabled="!selectedGame"
-        >
-          <option>Instantaneo</option>
-          <option>Menos de 24 horas</option>
-          <option>Personalizado</option>
-        </select>
-    
-        <label class="block mb-2">Región</label>
-        <select 
-          v-model="region" 
-          class="w-full p-2 rounded text-gray-100 mb-4"
-          :disabled="!selectedGame"
-        >
-          <option v-for="r in regions" :key="r.code" :value="r.name">
-            {{ getUnicodeFlagIcon(r.code) }} {{ r.name }}
-          </option>
-        </select>
-    
-        <button 
-          type="submit" 
-          class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 disabled:bg-gray-500"
-          :disabled="!selectedGame || !gameKey || !price"
-        >
-          Publicar Key
-        </button>
+          <label class="block mb-2">Plataforma</label>
+          <select v-model="platform" class="w-full p-2 rounded text-gray-100 mb-2" :disabled="!selectedGame">
+            <option v-for="p in availablePlatforms" :key="p" :value="p">
+              {{ p.toUpperCase() }}
+            </option>
+          </select>
+
+          <label class="block mb-2">Key</label>
+          <input type="text" :value="gameKey" @input="formatKeyInput" placeholder="XXXXX-YYYYY-ZZZZZ"
+            class="w-full p-2 rounded text-gray-100 mb-2" :disabled="!selectedGame" maxlength="17" />
+
+          <label class="block mb-2">Fecha de caducidad</label>
+          <input type="date" v-model="expirationDate" class="w-full p-2 rounded text-gray-100 mb-2"
+            :disabled="!selectedGame" />
+
+          <label class="block mb-2">Precio</label>
+          <input type="number" v-model.number="price" placeholder="$0.00" class="w-full p-2 rounded text-gray-100 mb-2"
+            :disabled="!selectedGame" min="0" step="0.01" />
+          <div class="text-red-400 text-sm mb-4">Tarifa (8%): ${{ tax }}</div>
+
+          <label class="block mb-2">Tipo de entrega</label>
+          <select v-model="deliveryTime" class="w-full p-2 rounded text-gray-100 mb-2" :disabled="!selectedGame">
+            <option>Instantaneo</option>
+            <option>Menos de 24 horas</option>
+            <option>Personalizado</option>
+          </select>
+
+          <label class="block mb-2">Región</label>
+          <select v-model="region" class="w-full p-2 rounded text-gray-100 mb-4" :disabled="!selectedGame">
+            <option v-for="r in regions" :key="r.code" :value="r.name">
+              {{ getUnicodeFlagIcon(r.code) }} {{ r.name }}
+            </option>
+          </select>
+
+          <button type="submit"
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 disabled:bg-gray-500"
+            :disabled="!selectedGame || !gameKey || !price">
+            Publicar Key
+          </button>
         </div>
-      
+
       </form>
     </section>
   </section>
