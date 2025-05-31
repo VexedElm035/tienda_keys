@@ -73,38 +73,38 @@ const scrollToSection = (sectionId) => {
         <ul class="mt-2 space-y-1 ml-2">
           
           <li>
-          <img src="../../steam.svg" alt="logo" class="w-4 h-4 inline-block mr-2">  
+          <img src="./../assets/steam.svg" alt="logo" class="w-4 h-4 inline-block mr-2">  
             <button @click="navigateToSection('Steam')" class="w-full text-left hover:bg-gray-700 p-2 rounded whitespace-nowrap">
               Steam
             </button>
           </li>
           
           <li>
-            <img src="../../ps.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
+            <img src="./../assets/ps.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
             <button @click="navigateToSection('PlayStation')" class="w-full text-left hover:bg-gray-700 p-2 rounded whitespace-nowrap">
               PS4
             </button>
           </li>
           <li>
-            <img src="../../ps.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
+            <img src="./../assets/ps.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
             <button @click="navigateToSection('PlayStation')" class="w-full text-left hover:bg-gray-700 p-2 rounded whitespace-nowrap">
               PS5
             </button>
           </li>
           <li>
-            <img src="../../xbox.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
+            <img src="./../assets/xbox.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
             <button @click="navigateToSection('Xbox')" class="w-full text-left hover:bg-gray-700 p-2 rounded whitespace-nowrap">
               Xbox One
             </button>
           </li>
           <li>
-            <img src="../../xbox.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
+            <img src="./../assets/xbox.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
             <button @click="navigateToSection('Xbox')" class="w-full text-left hover:bg-gray-700 p-2 rounded whitespace-nowrap">
               Xbox Series X
             </button>
           </li>
           <li>
-            <img src="../../switch.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
+            <img src="./../assets/switch.svg" alt="logo" class="w-4 h-4 inline-block mr-2">
             <button @click="navigateToSection('Nintendo')" class="w-full text-left hover:bg-gray-700 p-2 rounded whitespace-nowrap">
               Nintendo Switch
             </button>
