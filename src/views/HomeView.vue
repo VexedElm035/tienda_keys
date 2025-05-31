@@ -77,7 +77,7 @@ async function fetchData() {
         ]);
 
         games.value = gamesRes.data.slice(0, 6);
-        keys.value = keysRes.data;
+        keys.value = keysRes.data.filter(key => key.state === 'disponible');
         genres.value = genresRes.data;
     } catch (err) {
         console.error('Error fetching data:', err);

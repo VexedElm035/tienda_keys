@@ -34,7 +34,7 @@ const platformImages = {
     Series: "../img/cover_xboxseries.png",
     'X|S': "../img/cover_xboxseries.png",
     Switch: "../img/cover_switch.png",
-    steam: "../img/cover_steam.png",
+    PC: "../img/cover_steam.png",
 };
 
 const handleAddToCart = async () => {

@@ -8,7 +8,7 @@ import PrimeVue from 'primevue/config';
 import router from './router'
 import './output.css'
 
-axios.defaults.baseURL = 'http://localhost:8080/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
