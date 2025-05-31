@@ -14,9 +14,6 @@ const expandedMessageId = ref(null);
 
 const filters = [
   { type: 'all', label: 'Todos' },
-  { type: 'purchase', label: 'Compras' },
-  { type: 'sale', label: 'Ventas' },
-  { type: 'review', label: 'Reseñas' }
 ];
 
 const fetchMessages = async () => {

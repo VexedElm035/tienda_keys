@@ -48,7 +48,7 @@ const fetchSellerData = async () => {
         state: 'vendida'
       }
     });
-    soldKeys.value = soldResponse.data;
+    soldKeys.value = soldResponse.data.filter(key => key.seller_id === userId.value);
 
   } catch (err) {
     console.error('Error fetching seller data:', err);

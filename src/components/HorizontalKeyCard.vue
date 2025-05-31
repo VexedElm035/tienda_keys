@@ -3,10 +3,14 @@ import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
 import { useCartStore } from '@/stores/cart';
 import { useAuthStore } from '@/stores/auth';
+
 const auth = useAuthStore();
 const cart = useCartStore();
 const isAdding = ref(false);
 const addError = ref(null);
+
+const props = defineProps(['id', 'price', 'seller', 'seller_img', 'rate', 'deliverytime']);
+
 const handleAddToCart = async () => {
     if (!auth.isLoggedIn) {
         addError.value = 'Debes iniciar sesión para añadir al carrito';
@@ -26,9 +30,6 @@ const handleAddToCart = async () => {
 
     isAdding.value = false;
 };
-
-
-defineProps(['id', 'price', 'seller', 'seller_img', 'rate', 'deliverytime']);
 </script>
 
 <template>

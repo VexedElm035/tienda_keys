@@ -215,7 +215,7 @@ async function addKey() {
           <label class="block mb-2">Juego</label>
           <div class="relative mb-2">
             <input type="text" :value="searchGame" @input="(e) => debouncedSearch(e.target.value)"
-              placeholder="Buscar juego..." class="w-full p-2 rounded text-gray-100" @keydown.esc="searchGame = ''" />
+              placeholder="Buscar juego..." class="w-full p-2 rounded text-gray-400" @keydown.esc="searchGame = ''" />
             <ul v-if="searchGame && filteredGames.length"
               class="absolute z-10 bg-gray-700 w-full rounded max-h-64 overflow-auto shadow-lg">
               <li v-for="game in filteredGames" :key="game.id" @click="chooseGame(game)"
@@ -240,22 +240,22 @@ async function addKey() {
         </div>
         <div v-if="selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl">
           <label class="block mb-2">Plataforma</label>
-          <select v-model="platform" class="w-full p-2 rounded text-gray-100 mb-2 bg-gray-800" :disabled="!selectedGame">
+          <select v-model="platform" class="w-full p-2 rounded text-gray-400 mb-2 bg-gray-800" :disabled="!selectedGame">
             <option v-for="p in availablePlatforms" :key="p" :value="p">
               {{ p.toUpperCase() }}
             </option>
           </select>
-
+         
           <label class="block mb-2">Key</label>
           <input type="text" :value="gameKey" @input="formatKeyInput" placeholder="XXXXX-YYYYY-ZZZZZ"
-            class="w-full p-2 rounded text-gray-100 mb-2" :disabled="!selectedGame" maxlength="17" />
+            class="w-full p-2 rounded text-gray-400 mb-2" :disabled="!selectedGame" maxlength="17" />
 
           <label class="block mb-2">Fecha de caducidad</label>
-          <input type="date" v-model="expirationDate" class="w-full p-2 rounded text-gray-100 mb-2"
+          <input type="date" v-model="expirationDate" class="w-full p-2 rounded text-gray-400 mb-2"
             :disabled="!selectedGame" />
 
           <label class="block mb-2">Precio</label>
-          <input type="number" v-model.number="price" placeholder="$0.00" class="w-full p-2 rounded text-gray-100 mb-2"
+          <input type="number" v-model.number="price" placeholder="$0.00" class="w-full p-2 rounded text-gray-400 mb-2"
             :disabled="!selectedGame" min="0" step="0.01" />
           <div class="text-red-400 text-sm mb-4">Tarifa (8%): ${{ tax }}</div>
 
@@ -266,7 +266,7 @@ async function addKey() {
           </select> -->
 
           <label class="block mb-2">Región</label>
-          <select v-model="region" class="w-full p-2 rounded text-gray-100 mb-4 bg-gray-800" :disabled="!selectedGame">
+          <select v-model="region" class="w-full p-2 rounded text-gray-400 mb-4 bg-gray-800" :disabled="!selectedGame">
             <option v-for="r in regions" :key="r.code" :value="r.name">
               {{ getUnicodeFlagIcon(r.code) }} {{ r.name }}
             </option>

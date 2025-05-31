@@ -94,7 +94,7 @@ onMounted(() => {
 
 <template>
     <section class="bg-gray-900 text-white flex flex-col min-h-screen flex-1">
-        <section class="bg-yellow-500 text-center py-10 h-25">
+        <section class="bg-yellow-500 text-center py-10 max-h-35">
             <h2 class="text-2xl font-bold">Ofertas Especiales en Juegos Digitales</h2>
         </section>
         

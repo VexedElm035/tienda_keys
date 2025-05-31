@@ -50,10 +50,10 @@ async function loginUser() {
         <form @submit.prevent="loginUser">
           <label for="email">Correo electronico:</label>
           <input v-model="email" type="email" placeholder="e.g user_1234@mail.com"
-            class="w-full p-2 mb-3 rounded-lg text-gray-100">
+            class="w-full p-2 mb-3 rounded-lg text-gray-400">
           <label for="password">Contraseña:</label>
           <input v-model="password" type="password" placeholder="******"
-            class="w-full p-2 mb-3 rounded-lg text-gray-100">
+            class="w-full p-2 mb-3 rounded-lg text-gray-400">
           <button class="w-full bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-400">Ingresar</button>
           <p v-if="error" class="text-red-400 mt-2 text-sm">{{ error }}</p>
         </form>

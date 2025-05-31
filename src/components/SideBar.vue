@@ -50,9 +50,9 @@ const scrollToSection = (sectionId) => {
       <li>
         <RouterLink to="/" class="block hover:bg-gray-700 p-2 rounded whitespace-nowrap">Inicio</RouterLink>
       </li>
-      <li>
+    <!--<li>
         <RouterLink to="/sales" class="block hover:bg-gray-700 p-2 rounded whitespace-nowrap">Ofertas</RouterLink>
-      </li>
+      </li>-->  
       <li>
         <RouterLink to="/catalog" class="block hover:bg-gray-700 p-2 rounded whitespace-nowrap">Catálogo</RouterLink>
       </li>

@@ -54,19 +54,19 @@ async function signupUser() {
         <form @submit.prevent="signupUser">
           <label for="username">Nombre de usuario:</label>
           <input v-model="username" type="text" placeholder="user1234"
-            class="w-full p-2 mb-3 rounded-lg text-gray-100">
+            class="w-full p-2 mb-3 rounded-lg text-gray-400">
 
           <label for="email">Correo electrónico:</label>
           <input v-model="email" type="email" placeholder="e.g user_1234@mail.com"
-            class="w-full p-2 mb-3 rounded-lg text-gray-100">
+            class="w-full p-2 mb-3 rounded-lg text-gray-400">
 
           <label for="password">Contraseña:</label>
           <input v-model="password" type="password" placeholder="******"
-            class="w-full p-2 mb-3 rounded-lg text-gray-100">
+            class="w-full p-2 mb-3 rounded-lg text-gray-400">
 
           <label for="password_confirm">Confirmar Contraseña:</label>
           <input v-model="password_confirm" type="password" placeholder="******"
-            class="w-full p-2 mb-3 rounded-lg text-gray-100">
+            class="w-full p-2 mb-3 rounded-lg text-gray-400">
 
           <label class="block mb-2">Selecciona un avatar:</label>
           <div class="grid grid-cols-5 gap-2 mb-4">
