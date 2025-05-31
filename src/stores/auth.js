@@ -30,6 +30,7 @@ export const useAuthStore = defineStore('auth',
       token.value = ''
       avatar.value = ''
       await axios.post('../logout')
+      localStorage.removeItem('auth');
     }
 
     return { 

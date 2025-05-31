@@ -74,7 +74,7 @@ const uploadBanner = async () => {
 };
 
 const showBannerPreview = (filename) => {
-  currentPreview.value = `${apiUrl}uploads/${filename}`;
+  currentPreview.value = `${apiUrl}/uploads/${filename}`;
   showPreview.value = true;
 };
 

@@ -14,7 +14,7 @@ const fetchBanners = async () => {
     banners.value = response.data.map((filename, index) => ({
       id: index + 1,
       title: "",
-      img: `${apiUrl}uploads/${filename}`
+      img: `${apiUrl}/uploads/${filename}`
     }));
 
     if (banners.value.length === 0) {
