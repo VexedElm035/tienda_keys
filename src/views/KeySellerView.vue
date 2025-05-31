@@ -23,11 +23,32 @@ let state = ref('disponible');
 let isLoading = ref(false);
 let abortController = ref(null);
 
+deliveryTime.value = 'Instantáneo'; // Valor por defecto
+
 const regions = [
   { name: 'Global', code: 'GL' },
   { name: 'Norte América (NA)', code: 'US' },
-  { name: 'mx', code: 'MX' },
-  { name: 'Europa (EU)', code: 'FR' }
+  { name: 'México', code: 'MX' },
+  { name: 'Europa (EU)', code: 'EU' },
+  { name: 'Latinoamérica (LATAM)', code: 'BR' },
+  { name: 'Reino Unido (UK)', code: 'GB' },
+  { name: 'Alemania', code: 'DE' },
+  { name: 'Francia', code: 'FR' },
+  { name: 'España', code: 'ES' },
+  { name: 'Italia', code: 'IT' },
+  { name: 'Polonia', code: 'PL' },
+  { name: 'Rusia', code: 'RU' },
+  { name: 'Turquía', code: 'TR' },
+  { name: 'Australia', code: 'AU' },
+  { name: 'Japón', code: 'JP' },
+  { name: 'China', code: 'CN' },
+  { name: 'Sudeste Asiático (SEA)', code: 'SG' },
+  { name: 'Canadá', code: 'CA' },
+  { name: 'Argentina', code: 'AR' },
+  { name: 'Chile', code: 'CL' },
+  { name: 'Colombia', code: 'CO' },
+  { name: 'India', code: 'IN' },
+  { name: 'Sudáfrica', code: 'ZA' }
 ];
 
 // Debounced search
@@ -219,7 +240,7 @@ async function addKey() {
         </div>
         <div v-if="selectedGame" class="bg-gray-800 p-6 rounded-lg mt-6 w-full max-w-2xl">
           <label class="block mb-2">Plataforma</label>
-          <select v-model="platform" class="w-full p-2 rounded text-gray-100 mb-2" :disabled="!selectedGame">
+          <select v-model="platform" class="w-full p-2 rounded text-gray-100 mb-2 bg-gray-800" :disabled="!selectedGame">
             <option v-for="p in availablePlatforms" :key="p" :value="p">
               {{ p.toUpperCase() }}
             </option>
@@ -238,15 +259,14 @@ async function addKey() {
             :disabled="!selectedGame" min="0" step="0.01" />
           <div class="text-red-400 text-sm mb-4">Tarifa (8%): ${{ tax }}</div>
 
-          <label class="block mb-2">Tipo de entrega</label>
-          <select v-model="deliveryTime" class="w-full p-2 rounded text-gray-100 mb-2" :disabled="!selectedGame">
+          <!-- <label class="block mb-2">Tipo de entrega</label>
+          <select v-model="deliveryTime" class="w-full p-2 rounded text-gray-100 mb-2 bg-gray-800" :disabled="!selectedGame">
             <option>Instantaneo</option>
             <option>Menos de 24 horas</option>
-            <option>Personalizado</option>
-          </select>
+          </select> -->
 
           <label class="block mb-2">Región</label>
-          <select v-model="region" class="w-full p-2 rounded text-gray-100 mb-4" :disabled="!selectedGame">
+          <select v-model="region" class="w-full p-2 rounded text-gray-100 mb-4 bg-gray-800" :disabled="!selectedGame">
             <option v-for="r in regions" :key="r.code" :value="r.name">
               {{ getUnicodeFlagIcon(r.code) }} {{ r.name }}
             </option>

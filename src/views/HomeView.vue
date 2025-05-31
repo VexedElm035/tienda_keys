@@ -4,7 +4,7 @@ import KeyCard from '@/components/KeyCard.vue';
 import FeaturedCarrousel from '../components/FeaturedCarrousel.vue';
 import HorizontalCarousel from '@/components/Carrousel.vue';
 import axios from 'axios';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -29,32 +29,58 @@ let keys = ref([]);
 let genres = ref([]);
 const isLoading = ref(true);
 const isLoadingKeys = ref(true);
-const abortController = ref(null);
+
+// Definición de secciones por plataforma
+const platformSections = [
+  {
+    title: "PlayStation",
+    platforms: ["PS4", "PS5"],
+    icon: "../ps.svg"
+  },
+  {
+    title: "Xbox",
+    platforms: ["Series", "XONE", "X|S"],
+    icon: "../xbox.svg"
+  },
+  {
+    title: "Nintendo",
+    platforms: ["Switch"],
+    icon: "../switch.svg"
+  },
+  {
+    title: "Steam",
+    platforms: ["PC"],
+    icon: "../steam.svg"
+  }
+];
+
+// Filtramos las keys para cada sección
+const filteredKeysByPlatform = computed(() => {
+  return platformSections.map(section => ({
+    ...section,
+    keys: keys.value.filter(key => 
+      section.platforms.includes(key.platform) && 
+      key.state === 'disponible'
+    ).slice(0, 10) // Limitar a 10 items por sección
+  }));
+});
 
 async function fetchData() {
     try {
         isLoading.value = true;
         isLoadingKeys.value = true;
 
-        if (abortController.value) {
-            abortController.value.abort();
-        }
-
-        abortController.value = new AbortController();
-
         const [gamesRes, keysRes, genresRes] = await Promise.all([
-            axios.get('/games', { signal: abortController.value.signal }),
-            axios.get('/gamekeys', { signal: abortController.value.signal }),
-            axios.get('/genres', { signal: abortController.value.signal })
+            axios.get('/games'),
+            axios.get('/gamekeys'),
+            axios.get('/genres')
         ]);
 
         games.value = gamesRes.data.slice(0, 6);
-        keys.value = keysRes.data.filter(key => key.state === 'disponible').slice(0, 20);
+        keys.value = keysRes.data;
         genres.value = genresRes.data;
     } catch (err) {
-        if (!axios.isCancel(err)) {
-            console.error('Error fetching data:', err);
-        }
+        console.error('Error fetching data:', err);
     } finally {
         isLoading.value = false;
         isLoadingKeys.value = false;
@@ -64,12 +90,6 @@ async function fetchData() {
 onMounted(() => {
     fetchData();
 });
-
-onUnmounted(() => {
-    if (abortController.value) {
-        abortController.value.abort();
-    }
-});
 </script>
 
 <template>
@@ -77,6 +97,7 @@ onUnmounted(() => {
         <section class="bg-yellow-500 text-center py-10 h-25">
             <h2 class="text-2xl font-bold">Ofertas Especiales en Juegos Digitales</h2>
         </section>
+        
         <section class="container mx-auto p-6">
             <div class="relative">
                 <input v-model="searchQuery" @keypress="onKeyPress" type="text" placeholder="Buscar juegos..."
@@ -94,7 +115,7 @@ onUnmounted(() => {
 
         <FeaturedCarrousel />
 
-        <section class="container mx-auto p-2 mt-10 flex-grow">
+ <section class="container mx-auto p-2 mt-10 flex-grow">
             <h2 class="text-2xl font-bold text-center mb-6">Llaves Destacadas</h2>
             <HorizontalCarousel :items="keys" :loading="isLoadingKeys" placeholder-type="key">
                 <template #default="{ items }">
@@ -107,6 +128,7 @@ onUnmounted(() => {
             </HorizontalCarousel>
         </section>
 
+<!-- Sección de Juegos Destacados (existente) -->
         <section class="container mx-auto p-2 flex-grow h-120">
             <h2 class="text-2xl font-bold text-center mb-6">Juegos Destacados</h2>
             <HorizontalCarousel :items="games" :loading="isLoading" placeholder-type="game">
@@ -118,11 +140,51 @@ onUnmounted(() => {
                 </template>
             </HorizontalCarousel>
         </section>
+
+
+        <!-- Sección de Llaves por Plataforma -->
+        <template v-for="section in filteredKeysByPlatform" :key="section.title">
+            <section v-if="section.keys.length >= 0" class="container mx-auto p-2 mt-10" :id="section.title" >
+                <h2 class="text-2xl font-bold text-center mb-6 flex items-center justify-center gap-2">
+                   
+                    <img :src='`${section.icon}`' alt="icon" class="w-6 h-6">
+                    {{ section.title }}
+                </h2>
+                
+                <HorizontalCarousel 
+                    :items="section.keys" 
+                    :loading="isLoadingKeys" 
+                    placeholder-type="key"
+                    
+                >
+                    <template #default="{ items }">
+                        <div 
+                            v-for="key in items" 
+                            :key="key.id" 
+                            class="flex-shrink-0 w-48"
+                        >
+                            <KeyCard 
+                                :id="key.id" 
+                                :name="key.game.name" 
+                                :price="key.price" 
+                                :platform="key.platform"
+                                :region="key.region" 
+                                :seller="key.seller" 
+                                :img="key.game.img" 
+                                :rate="key.rate"
+                                :deliverytime="key.delivery_time" 
+                            />
+                        </div>
+                    </template>
+                </HorizontalCarousel>
+            </section>
+        </template>
+
+        
     </section>
 </template>
 
 <style>
-
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
@@ -136,11 +198,9 @@ onUnmounted(() => {
     0% {
         opacity: 0.5;
     }
-
     50% {
         opacity: 1;
     }
-
     100% {
         opacity: 0.5;
     }

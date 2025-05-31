@@ -24,7 +24,7 @@ import AdminView from '../views/admin/AdminView.vue'
 import AdminGamesView from '../views/admin/GamesView.vue'
 import AdminGenresView from '../views/admin/GenresView.vue'
 import AdminUsersView from '../views/admin/UsersView.vue'
-import AdminManagementView from '../views/admin/ManagementView.vue'
+import AdminKeysView from '../views/admin/KeysView.vue'
 import OrderView from '@/views/OrderView.vue'
 import InboxView from '@/views/InboxView.vue'
 
@@ -70,7 +70,7 @@ const routes = [
       { path: 'genres', name: 'admingenres', component: AdminGenresView },
       { path: 'purchases', name: 'adminpurchases', component: PurchasesView },
       { path: 'users', name: 'adminusers', component: AdminUsersView },
-      { path: 'management', name: 'adminmanagement', component: AdminManagementView },
+      { path: 'keys', name: 'adminkeys', component: AdminKeysView },
     ],
   },
   { path: '/:pathMatch(.*)*', name: 'notfound', component: NotFoundView }, 
@@ -84,7 +84,7 @@ const router = createRouter({
 const roleRoutes = {
   admin: ['admin', 'admingames', 'admingenres', 'adminusers', 'adminmanagement'],
   seller: ['dashboard', 'sell'],
-  user: ['profile', 'cart', 'purchaseCart', 'purchaseSingle', 'orders']
+  user: ['profile', 'cart', 'purchaseCart', 'purchaseSingle', 'orders', 'inbox'],
 }
 
 router.beforeEach((to, from, next) => {

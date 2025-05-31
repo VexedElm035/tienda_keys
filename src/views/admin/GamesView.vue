@@ -70,7 +70,6 @@ async function addGame() {
             launch_date: launch_date.value,
             publisher: publisher.value,
             available_platforms: available_platforms.value,
-            genre_id: genre_id.value,
             img: filename.value
         });
         games.value.push(response.data);
@@ -106,7 +105,6 @@ async function editGame() {
             launch_date: launch_date.value,
             publisher: publisher.value,
             available_platforms: available_platforms.value,
-            genre_id: genre_id.value,
             img: filename.value
         });
         games.value = games.value.map(game => game.id === id_game.value ? response.data : game);
@@ -172,10 +170,6 @@ async function editGame() {
 
                         <label for="available_platforms">Plataformas disponibles</label>
                         <input v-model="available_platforms" id="available_platforms" type="text"
-                            class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
-
-                        <label for="genre_id">Genero</label>
-                        <input v-model="genre_id" id="genre_id" type="number"
                             class="w-full p-2 mb-3 rounded-lg text-white-900" placeholder="e.g RPG">
 
 

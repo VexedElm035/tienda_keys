@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
@@ -13,7 +14,7 @@ const stats = ref({
 
 const isLoading = ref(true);
 const error = ref(null);
-
+const router = useRouter()
 const banners = ref([]);
 const fileInput = ref(null);
 const previewUrl = ref(null);
@@ -165,8 +166,11 @@ function logout() {
             <li>
               <RouterLink to="/admin/games" class="hover:text-yellow-400">Gestionar juegos</RouterLink>
             </li>
-            <li>
+            <!-- <li>
               <RouterLink to="/admin/genres" class="hover:text-yellow-400">Gestionar generos</RouterLink>
+            </li> -->
+            <li>
+              <RouterLink to="/admin/keys" class="hover:text-yellow-400">Gestionar llaves</RouterLink>
             </li>
             <li>
               <RouterLink to="/admin/users" class="hover:text-yellow-400">Gestionar usuarios</RouterLink>

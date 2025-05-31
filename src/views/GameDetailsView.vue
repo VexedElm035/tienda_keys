@@ -51,7 +51,7 @@ onMounted(async () => {
                     <h3 class="text-2xl font-bold mb-4">{{ game.name }}</h3>
                     <p class="mb-4">{{ game.description }}</p>
                     <ul class="mb-4">
-                        <li><strong>Género:</strong> RPG, Acción</li>
+                        <!-- <li><strong>Género:</strong> RPG, Acción</li> -->
                         <li><strong>Desarrollador:</strong> {{ game.publisher }}</li>
                         <li><strong>Fecha de lanzamiento:</strong> {{ game.launch_date }}</li>
                         <li><strong>Plataforma:</strong> {{ game.available_platforms }}</li>
