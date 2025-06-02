@@ -6,7 +6,6 @@ import axios from 'axios';
 const authStore = useAuthStore();
 const userId = computed(() => authStore.userId);
 
-// Estadísticas con valores por defecto
 const stats = ref({
   total_earnings: 0,
   total_sales: 0,
@@ -16,23 +15,19 @@ const stats = ref({
 const isLoading = ref(true);
 const error = ref(null);
 
-// Listados
 const availableKeys = ref([]);
 const soldKeys = ref([]);
 const isLoadingKeys = ref(true);
 
-// Fetch de datos
 const fetchSellerData = async () => {
   try {
     isLoading.value = true;
     isLoadingKeys.value = true;
 
-    // Obtener estadísticas
     const statsResponse = await axios.get(`/sellers/${userId.value}/stats`);
-    console.log('Stats response:', statsResponse.data); // Para depuración
+    console.log('Stats response:', statsResponse.data); 
     stats.value = statsResponse.data;
 
-    // Obtener llaves disponibles
     const availableResponse = await axios.get('/gamekeys-s', {
       params: {
         seller_id: userId.value,
@@ -41,14 +36,13 @@ const fetchSellerData = async () => {
     });
     availableKeys.value = availableResponse.data;
 
-    // Obtener llaves vendidas
     const soldResponse = await axios.get('/gamekeys', {
       params: {
         seller_id: userId.value,
         state: 'vendida'
       }
     });
-    soldKeys.value = soldResponse.data.filter(key => key.seller_id === userId.value);
+    soldKeys.value = soldResponse.data.filter(key => key.seller_id === userId.value && key.state === 'vendida');
 
   } catch (err) {
     console.error('Error fetching seller data:', err);
